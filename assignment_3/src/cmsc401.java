@@ -33,7 +33,7 @@ public class cmsc401 {
         }
 
         // build the tree
-        RedBlackTree tree = new RedBlackTree();
+        BinarySearchTree tree = new BinarySearchTree();
 
         for (int S_value : S) {
             tree.insert(S_value);
