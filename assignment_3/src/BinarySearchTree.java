@@ -30,6 +30,7 @@ public class BinarySearchTree {
             }
         }
 
+        // Otherwise, just like normal, we insert into either branch
         if (element < tree.getValue()) {
             tree.setLeft(recInsert(tree.getLeft(), element));
         } else {
@@ -40,30 +41,12 @@ public class BinarySearchTree {
     }
 
     public int[] getSentenceRange(int element) {
-        return this.findPosition(this.root, element);
+        int a = getPredecessorValue(this.root, element) + 1;
+        int b = getSuccessorValue(this.root, element);
+        return new int[]{a, b};
     }
 
-
-    private int[] findPosition(BSTNode tree, int element) {
-        if (element < tree.getValue()) {
-            if (null == tree.getLeft()) {
-                int a = getPredecessorValue(this.root, element) + 1;
-                int b = tree.getValue();
-                return new int[]{a, b};
-            }
-
-            return findPosition(tree.getLeft(), element);
-        } else {
-            if (null == tree.getRight()) {
-                int a = tree.getValue() + 1;
-                int b = getSuccessorValue(this.root, element);
-                return new int[]{a, b};
-            }
-
-            return findPosition(tree.getRight(), element);
-        }
-    }
-
+    // get the value from the list that would come directly after `value`
     private int getSuccessorValue(BSTNode tree, int value) {
         BSTNode node = null;
 
@@ -81,6 +64,7 @@ public class BinarySearchTree {
         return null != node ? node.getValue() : 0;
     }
 
+    // get the value from the list that would come directly before `value`
     private int getPredecessorValue(BSTNode tree, int value) {
         BSTNode node = null;
 
@@ -124,6 +108,7 @@ public class BinarySearchTree {
         return newTree;
     }
 
+    // creates a new node with the current tree node as a child
     BSTNode insertAsRoot(BSTNode tree, int element) {
         if (null == tree) {
             return new BSTNode(element);

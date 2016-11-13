@@ -37,6 +37,7 @@ public class BSTNode {
         return size;
     }
 
+    // size used to determine if two nodes are balanced identically
     public void updateSize() {
         this.size = 1;
         if (null != this.getLeft()) {
