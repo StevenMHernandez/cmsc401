@@ -1,9 +1,6 @@
 // Steven Hernandez.
 // Assignment 3.
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class BinarySearchTree {
     protected BSTNode root;
 
@@ -20,16 +17,16 @@ public class BinarySearchTree {
             return new BSTNode(element);
         }
 
-        // If the tree is balanced below,
+        // If `tree` is balanced below,
         // we simply shift the current element value to be the root
         // This helps us keep a balanced tree,
         // even though our data is coming in `in-order`
         if (null == tree.getLeft() && null == tree.getRight()) {
-            return insertRoot(tree, element);
+            return insertAsRoot(tree, element);
         }
         if (null != tree.getLeft() && null != tree.getRight()) {
             if (tree.getLeft().getSize() == tree.getRight().getSize()) {
-                return insertRoot(tree, element);
+                return insertAsRoot(tree, element);
             }
         }
 
@@ -42,9 +39,63 @@ public class BinarySearchTree {
         return tree;
     }
 
-    public int[] findRange(int element) {
-        // TODO: implement
-        return new int[]{0, 1};
+    public int[] getSentenceRange(int element) {
+        return this.findPosition(this.root, element);
+    }
+
+
+    private int[] findPosition(BSTNode tree, int element) {
+        if (element < tree.getValue()) {
+            if (null == tree.getLeft()) {
+                int a = getPredecessorValue(this.root, element) + 1;
+                int b = tree.getValue();
+                return new int[]{a, b};
+            }
+
+            return findPosition(tree.getLeft(), element);
+        } else {
+            if (null == tree.getRight()) {
+                int a = tree.getValue() + 1;
+                int b = getSuccessorValue(this.root, element);
+                return new int[]{a, b};
+            }
+
+            return findPosition(tree.getRight(), element);
+        }
+    }
+
+    private int getSuccessorValue(BSTNode tree, int value) {
+        BSTNode node = null;
+
+        while (null != tree) {
+            if (value < tree.getValue()) {
+                node = tree;
+                tree = tree.getLeft();
+            } else if (value > tree.getValue()) {
+                tree = tree.getRight();
+            } else {
+                break;
+            }
+        }
+
+        return null != node ? node.getValue() : 0;
+    }
+
+    private int getPredecessorValue(BSTNode tree, int value) {
+        BSTNode node = null;
+
+        while (null != tree) {
+            if (value < tree.getValue()) {
+                tree = tree.getLeft();
+            } else if (value > tree.getValue()) {
+                node = tree;
+                tree = tree.getRight();
+            } else {
+                break;
+            }
+        }
+
+        return null != node ? node.getValue() : 0;
     }
 
     BSTNode rotateLeft(BSTNode tree) {
@@ -73,15 +124,15 @@ public class BinarySearchTree {
         return newTree;
     }
 
-    BSTNode insertRoot(BSTNode tree, int element) {
+    BSTNode insertAsRoot(BSTNode tree, int element) {
         if (null == tree) {
             return new BSTNode(element);
         }
         if (element < tree.getValue()) {
-            tree.setLeft(this.insertRoot(tree.getLeft(), element));
+            tree.setLeft(this.insertAsRoot(tree.getLeft(), element));
             return this.rotateRight(tree);
         } else {
-            tree.setRight(this.insertRoot(tree.getRight(), element));
+            tree.setRight(this.insertAsRoot(tree.getRight(), element));
             return this.rotateLeft(tree);
         }
     }

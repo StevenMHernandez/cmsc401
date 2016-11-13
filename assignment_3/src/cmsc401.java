@@ -43,9 +43,9 @@ public class cmsc401 {
         ArrayList<int[]> sentences = new ArrayList<int[]>();
 
         for (int W_value : W) {
-            sentences.add(tree.findRange(W_value));
+            sentences.add(tree.getSentenceRange(W_value));
         }
-        
+
         // Now just print out the values
         // he had mentioned that this part doesn't matter so much
         // we can repeatedly output the same sentences (if it contains the word multiple times),
