@@ -35,9 +35,9 @@ public class cmsc401 {
         // build the tree
         BinarySearchTree tree = new BinarySearchTree();
 
-        for (int S_value : S) {
-            tree.insert(S_value);
-        }
+        // since our entries are in order
+        // we should insert recursively the median
+        tree = insertMedianIntoBST(tree, S, 0, sizeS - 1);
 
         // start actual searching here
         ArrayList<int[]> sentences = new ArrayList<int[]>();
@@ -55,5 +55,25 @@ public class cmsc401 {
         for (int[] bounds : sentences) {
             System.out.println(bounds[0] + " " + bounds[1]);
         }
+    }
+
+    public static BinarySearchTree insertMedianIntoBST(BinarySearchTree tree, int[] arr, int left, int right) {
+        if (left == right) {
+            tree.insert(arr[left]);
+        } else if (left + 1 == right) {
+            tree.insert(arr[left]);
+            tree.insert(arr[right]);
+        } else {
+            int median = getMedian(left, right);
+            tree.insert(arr[median]);
+            tree = insertMedianIntoBST(tree, arr, left, median - 1);
+            tree = insertMedianIntoBST(tree, arr, median + 1, right);
+        }
+
+        return tree;
+    }
+
+    public static int getMedian(int left, int right) {
+        return (int) Math.round(0.5 * (right - left)) + left;
     }
 }
